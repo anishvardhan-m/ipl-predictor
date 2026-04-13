@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+data_cricsheet/
+ipl_csv2.zip
+deliveries.csv
+matches.csv

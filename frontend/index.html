@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPL Pulse | Performance Analytics & Predictions</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  
+  <div class="app-container">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <i data-lucide="zap"></i>
+        <span>IPL Pulse</span>
+      </div>
+      <div class="nav-links">
+        <a href="#predictor" class="active">Win Predictor</a>
+        <a href="#players">Player Rankings</a>
+      </div>
+    </nav>
+    
+    <main>
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Predict the Unpredictable</h1>
+          <p>Real-time IPL match win probabilities fueled by ball-by-ball historical data and XGBoost ML algorithms.</p>
+        </div>
+        <div class="hero-bg-glow"></div>
+      </section>
+
+      <!-- Win Predictor Section -->
+      <section id="predictor" class="card predictor-section">
+        <div class="section-header">
+          <i data-lucide="crosshair"></i>
+          <h2>Match Outcome Predictor</h2>
+        </div>
+        
+        <div class="predictor-grid">
+          <!-- Inputs -->
+          <div class="inputs-panel">
+            <div class="input-group">
+              <label>Batting Team (Innings 2)</label>
+              <select id="batting-team"></select>
+            </div>
+            <div class="input-group">
+              <label>Bowling Team (Innings 2)</label>
+              <select id="bowling-team"></select>
+            </div>
+            <div class="input-group">
+              <label>Match Venue</label>
+              <select id="venue"></select>
+            </div>
+            
+            <div class="stats-inputs-grid">
+              <div class="input-group">
+                <label>Target Score</label>
+                <input type="number" id="target" value="200" min="1" />
+              </div>
+              <div class="input-group">
+                <label>Current Score</label>
+                <input type="number" id="current_score" value="100" min="0" />
+              </div>
+              <div class="input-group">
+                <label>Overs Bowled</label>
+                <input type="number" step="0.1" id="overs_bowled" value="10.0" min="0.1" max="19.5" />
+              </div>
+              <div class="input-group">
+                <label>Wickets Down</label>
+                <input type="number" id="wickets_down" value="2" min="0" max="9" />
+              </div>
+            </div>
+            <button id="predict-btn" class="btn primary">Calculate Probability</button>
+          </div>
+          
+          <!-- Outputs -->
+          <div class="outputs-panel">
+            <div class="dynamic-metrics">
+              <div class="metric-box">
+                <span>Runs Needed</span>
+                <h3 id="runs_needed">-</h3>
+              </div>
+              <div class="metric-box">
+                <span>Balls Left</span>
+                <h3 id="balls_left">-</h3>
+              </div>
+              <div class="metric-box">
+                <span>Req. Run Rate</span>
+                <h3 id="rrr">-</h3>
+              </div>
+              <div class="metric-box">
+                <span>Current RR</span>
+                <h3 id="crr">-</h3>
+              </div>
+            </div>
+            
+            <div class="prob-visualizer">
+              <h3>Win Probability</h3>
+              <div class="progress-bar-container">
+                <div class="progress-labels">
+                  <span id="bat-team-label">Batting Team</span>
+                  <span id="bowl-team-label">Bowling Team</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill win-fill" id="win-fill" style="width: 50%"></div>
+                  <div class="progress-fill loss-fill" id="loss-fill" style="width: 50%"></div>
+                </div>
+                <div class="progress-percentages">
+                  <strong id="win-perc" class="text-win">50%</strong>
+                  <strong id="loss-perc" class="text-loss">50%</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Player Rankings -->
+      <section id="players" class="card players-section">
+        <div class="section-header">
+          <i data-lucide="trending-up"></i>
+          <h2>Player Performance & Estimated Auction Value</h2>
+        </div>
+        
+        <div class="tabs">
+          <button class="tab-btn active" data-target="batsmen">Top Batsmen</button>
+          <button class="tab-btn" data-target="bowlers">Top Bowlers</button>
+        </div>
+        
+        <!-- Batsmen Table -->
+        <div class="table-container tab-content active" id="batsmen">
+          <table>
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Total Runs</th>
+                <th>Strike Rate</th>
+                <th>Sixes</th>
+                <th>Estimated Value (₹)</th>
+              </tr>
+            </thead>
+            <tbody id="batsmen-tbody">
+              <!-- Filled via JS -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Bowlers Table -->
+        <div class="table-container tab-content" id="bowlers" style="display:none;">
+          <table>
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Wickets</th>
+                <th>Economy</th>
+                <th>Average</th>
+              </tr>
+            </thead>
+            <tbody id="bowlers-tbody">
+              <!-- Filled via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+    </main>
+    
+    <footer>
+      <p>Powered by XGBoost & Random Forest, built with vanilla web technologies.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
