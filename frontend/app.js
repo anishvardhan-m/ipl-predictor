@@ -1,7 +1,7 @@
 // Initialize Icons
 lucide.createIcons();
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = '';
 
 // Global State
 let matchMeta = { teams: [], venues: [] };
