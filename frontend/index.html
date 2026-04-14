@@ -15,8 +15,13 @@
   
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+  <!-- 3D Backgronud Container -->
+  <div class="spline-bg-container"></div>
   
   <div class="app-container">
     <!-- Navbar -->
@@ -38,7 +43,6 @@
           <h1>Predict the Unpredictable</h1>
           <p>Real-time IPL match win probabilities fueled by ball-by-ball historical data and XGBoost ML algorithms.</p>
         </div>
-        <div class="hero-bg-glow"></div>
       </section>
 
       <!-- Win Predictor Section -->
@@ -183,5 +187,6 @@
   </div>
 
   <script src="app.js"></script>
+  <script src="three-scene.js"></script>
 </body>
 </html>
